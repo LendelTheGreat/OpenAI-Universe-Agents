@@ -12,9 +12,13 @@ env.configure(remotes='vnc://localhost:5900+15900')
 env = wrappers.experimental.SafeActionSpace(env)
 observation_n = env.reset()
 
-actions = [('KeyEvent', 'left', True), ('KeyEvent', 'right', True), ('KeyEvent', 'up', True)]
+actions = [
+    [('KeyEvent', 'left', True), ('KeyEvent', 'right', False)],
+    [('KeyEvent', 'left', False), ('KeyEvent', 'right', True)],
+    [('KeyEvent', 'left', False), ('KeyEvent', 'right', False)]
+]
 
 while True:
-    action_n = [[sample_action()] for ob in observation_n]
+    action_n = [sample_action() for ob in observation_n]
     observation_n, reward_n, done_n, info = env.step(action_n)
     env.render()
