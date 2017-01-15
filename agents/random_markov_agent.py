@@ -16,15 +16,13 @@ actions = [
 ]
 
 action = 0
-r = 0
 
 while True:
-    r += 1
-    if r % 500 == 0:
-        if randint(0, 1) == 0:
-            action = (action + 1) % 3
-        else:
-            action = (action - 1) % 3
+    r = randint(1, 100)
+    if r >= 91 and r <= 95:
+        action = (action + 1) % 3
+    elif r >= 96:
+        action = (action - 1) % 3
 
     action_n = [actions[action] for ob in observation_n]
     observation_n, reward_n, done_n, info = env.step(action_n)
