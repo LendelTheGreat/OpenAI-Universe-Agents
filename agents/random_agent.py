@@ -12,7 +12,7 @@ observation_n = env.reset()
 actions = [('KeyEvent', 'left', True), ('KeyEvent', 'right', True), ('KeyEvent', 'up', True)]
 
 while True:
-    action_n = [[sample_action] for ob in observation_n]
+    action_n = [[sample_action()] for ob in observation_n]
     observation_n, reward_n, done_n, info = env.step(action_n)
     env.render()
 
