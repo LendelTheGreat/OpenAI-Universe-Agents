@@ -38,29 +38,38 @@ agent = RandomAgent(actions)
 # Monitoring
 acc_reward = [0] * env.n
 episode_length = [0] * env.n
+episode_done = True
+print_results = False
 
 # Main env loop
+print 'Starting main loop'
 while True:
     for i in xrange(env.n):
-        obs = observation_n[i]
-        r = reward_n[i]
-        done = done_n[i]
+        if observation_n[i]:
+            episode_done = False
+            obs = observation_n[i]
+            r = reward_n[i]
+            done = done_n[i]
 
-        # Get game pixels from the whole screen
-        obs = np.asarray(obs["vision"])
-        obs = obs[off_h:off_h+h, off_w:off_w+w, :]
+            # Get game pixels from the whole screen
+            obs = np.asarray(obs["vision"])
+            obs = obs[off_h:off_h+h, off_w:off_w+w, :]
 
-        # Get the action from agent
-        action_n[i] = agent(obs, r, done)
+            # Get the action from agent
+            action_n[i] = agent(obs, r, done)
+        elif not episode_done:
+            episode_done = True
+            print_results = True
 
         # Reporting
-        if not done:
+        if not episode_done:
             acc_reward[i] += r
             episode_length[i] += 1
         else:
-            print '######################################################'
-            print 'Accumulated reward: '+str(acc_reward[i])
-            print 'Episode length: '+str(episode_length[i])
+            if print_results:
+                print 'Accumulated reward: '+str(acc_reward[i])
+                print 'Episode length: '+str(episode_length[i])
+                print_results = False
             acc_reward[i] = 0
             episode_length[i] = 0
 
